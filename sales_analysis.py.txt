@@ -1,0 +1,54 @@
+# Import pandas library
+import pandas as pd
+
+# Load the dataset
+df = pd.read_csv("sales_data.csv")
+
+# Display first 5 rows
+print("First 5 rows of the dataset:")
+print(df.head())
+
+# Check shape of the dataset
+print("\nDataset Shape (Rows, Columns):")
+print(df.shape)
+
+# Check column names and data types
+print("\nDataset Info:")
+print(df.info())
+
+# Check missing values
+print("\nMissing Values:")
+print(df.isnull().sum())
+
+# Fill missing Quantity with 0
+df['Quantity'] = df['Quantity'].fillna(0)
+
+# Fill missing Total_Sales by calculating Quantity * Price
+df['Total_Sales'] = df['Total_Sales'].fillna(df['Quantity'] * df['Price'])
+
+# Remove duplicate rows
+df.drop_duplicates(inplace=True)
+
+print("\nData after cleaning:")
+print(df.isnull().sum())
+
+
+# Calculate total revenue
+total_revenue = df['Total_Sales'].sum()
+
+# Find best-selling product (by total sales)
+best_product = df.groupby('Product')['Total_Sales'].sum().idxmax()
+
+# Calculate average sales
+average_sales = df['Total_Sales'].mean()
+
+# Highest and lowest sales
+max_sale = df['Total_Sales'].max()
+min_sale = df['Total_Sales'].min()
+
+print("\n--- Sales Analysis ---")
+print(f"Total Revenue: ₹{total_revenue:,.2f}")
+print(f"Best Selling Product: {best_product}")
+print(f"Average Sale Value: ₹{average_sales:.2f}")
+print(f"Highest Sale: ₹{max_sale}")
+print(f"Lowest Sale: ₹{min_sale}")
